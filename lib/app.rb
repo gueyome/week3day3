@@ -18,10 +18,10 @@ end
 
 def login_streaming
     client = Twitter::Streaming::Client.new do |config|
-        config.consumer_key        = "YOUR_CONSUMER_KEY"
-        config.consumer_secret     = "YOUR_CONSUMER_SECRET"
-        config.access_token        = "YOUR_ACCESS_TOKEN"
-        config.access_token_secret = "YOUR_ACCESS_SECRET"
+        config.consumer_key        = ENV["TWITTER_CONSUMER_KEY"]
+        config.consumer_secret     = ENV["TWITTER_CONSUMER_SECRET"]
+        config.access_token        = ENV["TWITTER_ACCESS_TOKEN"]
+        config.access_token_secret = ENV["TWITTER_ACCESS_TOKEN_SECRET"]
     end
     return client
 end
@@ -61,8 +61,10 @@ def streaming_like_follow
     client.filter(track: "#bonjour_monde") do |object|
         if object.is_a?(Twitter::Tweet)
             puts object.text
-            client.favorite(object)
-            client.follow(object.user)
+            puts object.class
+            client_2 = login_twitter
+            client_2.favorite(object)
+            client_2.follow(object.user)
         end
     end
 end
